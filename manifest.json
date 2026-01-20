@@ -1,0 +1,12 @@
+{
+  "name": "Continuum Learning App",
+  "short_name": "Continuum",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#2563EB",
+  "icons": [
+    {"src": "logo.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "logo.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
