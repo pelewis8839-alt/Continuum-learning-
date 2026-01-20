@@ -1,174 +1,115 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Continuum Learning App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f9;
-    }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-    nav {
-      display: flex;
-      justify-content: space-around;
-      background: white;
-      padding: 10px;
-      border-bottom: 1px solid #ccc;
-    }
-    nav button {
-      background: none;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    nav button:hover {
-      color: #2563eb;
-      font-weight: bold;
-    }
-    .page {
-      display: none;
-      padding: 20px;
-    }
-    .active {
-      display: block;
-    }
-    .card {
-      background: white;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Continuum Learning App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<style>
+body {font-family: Arial,sans-serif;margin:0;background:#f4f6f9;}
+header{background:#2563eb;color:white;padding:15px;text-align:center;font-size:24px;font-weight:bold;}
+nav{display:flex;justify-content:space-around;background:white;padding:10px;border-bottom:1px solid #ccc;}
+nav button{background:none;border:none;font-size:16px;cursor:pointer;}
+nav button:hover{color:#2563eb;font-weight:bold;}
+.page{display:none;padding:20px;}
+.active{display:block;}
+.card{background:white;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 0 5px rgba(0,0,0,0.1);}
+input,button{padding:10px;margin:5px 0;width:100%;}
+button.primary{background:#2563eb;color:white;border:none;border-radius:5px;cursor:pointer;}
+button.primary:hover{background:#1e40af;}
+</style>
 </head>
-
 <body>
 
 <header>Continuum Learning App</header>
 
 <nav>
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('subjects')">Subjects</button>
-  <button onclick="showPage('library')">Library</button>
-  <button onclick="showPage('dashboard')">Dashboard</button>
-  <button onclick="showPage('login')">Login</button>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('subjects')">Subjects</button>
+<button onclick="showPage('library')">Library</button>
+<button onclick="showPage('dashboard')">Dashboard</button>
+<button onclick="showPage('login')">Login</button>
 </nav>
 
 <div id="home" class="page active">
-  <h2>Welcome 👋</h2>
-  <div class="card">Study smarter with videos, quizzes and notes.</div>
-  <div class="card">Create your timetable and get reminders.</div>
-  <div class="card">Compete with students worldwide 🌍</div>
+<h2>Welcome 👋</h2>
+<div class="card">Study smarter with videos, quizzes and notes.</div>
+<div class="card">Create your timetable and get reminders.</div>
+<div class="card">Compete with students worldwide 🌍</div>
+<div class="card">
+<button class="primary" onclick="showPage('login')">Student Login</button>
+<button class="primary" onclick="showPage('adminLogin')">Admin Login</button>
+</div>
 </div>
 
 <div id="subjects" class="page">
-  <h2>Subjects 📚</h2>
-  <div class="card">Biology</div>
-  <div class="card">Chemistry</div>
-  <div class="card">Physics</div>
-  <div class="card">Mathematics</div>
-  <div class="card">Computer</div>
-  <div class="card">English</div>
-  <div class="card">History</div>
-  <div class="card">Geography</div>
-  <div class="card">French</div>
+<h2>Subjects 📚</h2>
+<div class="card">Biology</div>
+<div class="card">Chemistry</div>
+<div class="card">Physics</div>
+<div class="card">Mathematics</div>
+<div class="card">Computer</div>
+<div class="card">English</div>
+<div class="card">History</div>
+<div class="card">Geography</div>
+<div class="card">French</div>
 </div>
 
 <div id="library" class="page">
-  <h2>Library 📖</h2>
-  <div class="card">Novels</div>
-  <div class="card">Textbooks</div>
-  <div class=
+<h2>Library 📖</h2>
+<div class="card">Novels</div>
+<div class="card">Textbooks</div>
+<div class="card">University Notes</div>
 </div>
 
 <div id="dashboard" class="page">
-  <h2>Dashboard 🏆</h2>
-  <div class="card">Ranking: Coming Soon</div>
-  <div class="card">Exams: Coming Soon</div>
-  <div class="card">Top Students Awards 🎖️</div>
+<h2>Dashboard 🏆</h2>
+<div class="card">Ranking: Coming Soon</div>
+<div class="card">Exams: Coming Soon</div>
+<div class="card">Top Students Awards 🎖️</div>
 </div>
 
 <div id="login" class="page">
-  <h2>Login 🔐</h2>
-  <div class="card">
-    <input type="text" placeholder="Username" style="width:100%;padding:10px;"><br><br>
-    <input type="password" placeholder="Password" style="width:100%;padding:10px;"><br><br>
-    <button style="padding:10px;width:100%;">Login</button>
-  </div>
+<h2>Student Login 🔐</h2>
+<div class="card">
+<input type="text" placeholder="Username" id="studentUser">
+<input type="password" placeholder="Password" id="studentPass">
+<button class="primary" onclick="login('student')">Login</button>
+</div>
+</div>
+
+<div id="adminLogin" class="page">
+<h2>Admin Login 🔐</h2>
+<div class="card">
+<input type="text" placeholder="Admin Username" id="adminUser">
+<input type="password" placeholder="Admin Password" id="adminPass">
+<button class="primary" onclick="login('admin')">Login</button>
+</div>
 </div>
 
 <script>
-  function showPage(pageId) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
+function showPage(pageId){
+  const pages=document.querySelectorAll('.page');
+  pages.forEach(p=>p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+}
+
+function login(role){
+  const studentUser=document.getElementById('studentUser').value;
+  const studentPass=document.getElementById('studentPass').value;
+  const adminUser=document.getElementById('adminUser').value;
+  const adminPass=document.getElementById('adminPass').value;
+
+  if(role==='student'){
+    if(studentUser && studentPass){alert('Student logged in!');showPage('dashboard');}
+    else{alert('Enter student username and password');}
+  } else {
+    if(adminUser==='admin' && adminPass==='admin123'){
+      alert('Admin logged in!');showPage('dashboard');
+    } else {alert('Invalid admin credentials');}
   }
-</script>
-
-
-
-<div id="home" class="page active">
-  <h2>Welcome 👋</h2>
-  <div class="card">Study smarter with videos, quizzes and notes.</div>
-  <div class="card">Create your timetable and get reminders.</div>
-  <div class="card">Compete with students worldwide 🌍</div>
-</div>
-
-<div id="subjects" class="page">
-  <h2>Subjects 📚</h2>
-  <div class="card">Biology</div>
-  <div class="card">Chemistry</div>
-  <div class="card">Physics</div>
-  <div class="card">Mathematics</div>
-  <div class="card">Computer</div>
-  <div class="card">English</div>
-  <div class="card">History</div>
-  <div class="card">Geography</div>
-  <div class="card">French</div>
-</div>
-
-<div id="library" class="page">
-  <h2>Library 📖</h2>
-  <div class="card">Novels</div>
-  <div class="card">Textbooks</div>
-  <div class=
-</div>
-
-<div id="dashboard" class="page">
-  <h2>Dashboard 🏆</h2>
-  <div class="card">Ranking: Coming Soon</div>
-  <div class="card">Exams: Coming Soon</div>
-  <div class="card">Top Students Awards 🎖️</div>
-</div>
-
-<div id="login" class="page">
-  <h2>Login 🔐</h2>
-  <div class="card">
-    <input type="text" placeholder="Username" style="width:100%;padding:10px;"><br><br>
-    <input type="password" placeholder="Password" style="width:100%;padding:10px;"><br><br>
-    <button style="padding:10px;width:100%;">Login</button>
-  </div>
-</div>
-
-<script>
-  function showPage(pageId) {
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-  }
+}
 </script>
 
 </body>
-  </html>
+</html>
