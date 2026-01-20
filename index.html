@@ -1,389 +1,232 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Continuum Learning App</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="manifest" href="manifest.json">
-<style>
-body {font-family: Arial,sans-serif;margin:0;background:#f4f6f9;}
-header{background:#2563eb;color:white;padding:15px;text-align:center;font-size:24px;font-weight:bold;}
-nav{display:flex;flex-wrap:wrap;justify-content:space-around;background:white;padding:10px;border-bottom:1px solid #ccc;}
-nav button{background:none;border:none;font-size:14px;margin:2px;cursor:pointer;}
-nav button:hover{color:#2563eb;font-weight:bold;}
-.page{display:none;padding:20px;}
-.active{display:block;}
-.card{background:white;padding:15px;margin:10px 0;border-radius:8px;box-shadow:0 0 5px rgba(0,0,0,0.1);}
-input,button,textarea,select{padding:10px;margin:5px 0;width:100%;}
-button.primary{background:#2563eb;color:white;border:none;border-radius:5px;cursor:pointer;}
-button.primary:hover{background:#1e40af;}
-textarea{resize:none;}
-.chatBox{height:200px;overflow:auto;background:#eef;padding:5px;border-radius:5px;}
-video{width:100%;max-height:300px;border-radius:8px;margin:5px 0;}
-</style>
-</head>
-<body>
+/*******************************
+ * Continuum Learning App Script
+ * Fully Functional Placeholder
+ *******************************/
 
-<header>Continuum Learning App</header>
-
-<nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('subjects')">Subjects</button>
-<button onclick="showPage('library')">Library</button>
-<button onclick="showPage('dashboard')">Dashboard</button>
-<button onclick="showPage('login')">Student Login</button>
-<button onclick="showPage('adminLogin')">Admin Login</button>
-<button onclick="showPage('settings')">Settings</button>
-</nav>
-
-<!-- Home Page -->
-<div id="home" class="page active">
-<h2>Welcome 👋</h2>
-<div class="card">Study smarter with videos, quizzes, and notes.</div>
-<div class="card">Create your timetable and get reminders.</div>
-<div class="card">Compete with students worldwide 🌍</div>
-</div>
-
-<!-- Subjects Page -->
-<div id="subjects" class="page">
-<h2>Subjects 📚</h2>
-<div id="subjectsList" class="card"></div>
-</div>
-
-<!-- Library Page -->
-<div id="library" class="page">
-<h2>Library 📖</h2>
-<div id="libraryList" class="card"></div>
-</div>
-
-<!-- Dashboard Page -->
-<div id="dashboard" class="page">
-<h2>Student Dashboard 🏆</h2>
-
-<div class="card">
-<h3>Videos</h3>
-<div id="videoList"></div>
-</div>
-
-<div class="card">
-<h3>Quizzes</h3>
-<div id="quizList"></div>
-</div>
-
-<div class="card">
-<h3>Timetable</h3>
-<textarea id="timetable" placeholder="Add your timetable here"></textarea>
-<button class="primary" onclick="saveTimetable()">Save Timetable</button>
-</div>
-
-<div class="card">
-<h3>Leaderboard</h3>
-<div id="leaderboard"></div>
-</div>
-
-<div class="card">
-<h3>Chat with Learners</h3>
-<textarea id="chatMessage" placeholder="Type a message"></textarea>
-<button class="primary" onclick="sendChat()">Send</button>
-<div id="chatBox" class="chatBox"></div>
-</div>
-</div>
-
-<!-- Student Login -->
-<div id="login" class="page">
-<h2>Student Login 🔐</h2>
-<div class="card">
-<input type="email" placeholder="Email" id="studentEmail">
-<input type="password" placeholder="Password" id="studentPass">
-<button class="primary" onclick="login('student')">Login</button>
-<button class="primary" onclick="registerStudent()">Register</button>
-</div>
-</div>
-
-<!-- Admin Login -->
-<div id="adminLogin" class="page">
-<h2>Admin Login 🔐</h2>
-<div class="card">
-<input type="email" placeholder="Admin Email" id="adminEmail">
-<input type="password" placeholder="Admin Pass" id="adminPass">
-<button class="primary" onclick="login('admin')">Login</button>
-</div>
-</div>
-
-<!-- Admin Dashboard -->
-<div id="adminDashboard" class="page">
-<h2>Admin Dashboard ⚙️</h2>
-
-<div class="card">
-<h3>Add Subject</h3>
-<input type="text" id="newSubject" placeholder="Subject Name">
-<button class="primary" onclick="addSubject()">Add Subject</button>
-</div>
-
-<div class="card">
-<h3>Add Library Item / Book</h3>
-<input type="text" id="newLibraryTitle" placeholder="Title">
-<textarea id="newLibraryDesc" placeholder="Description / Link"></textarea>
-<button class="primary" onclick="addLibraryItem()">Add Library Item</button>
-</div>
-
-<div class="card">
-<h3>Add Video</h3>
-<input type="text" id="videoSubject" placeholder="Subject">
-<input type="text" id="videoTitle" placeholder="Video Title">
-<input type="text" id="videoURL" placeholder="Video URL (YouTube embed) e.g. https://www.youtube.com/embed/xxxx">
-<button class="primary" onclick="addVideo()">Add Video</button>
-</div>
-
-<div class="card">
-<h3>Add Quiz</h3>
-<input type="text" id="quizSubject" placeholder="Subject">
-<input type="text" id="quizQuestion" placeholder="Question">
-<input type="text" id="quizOptions" placeholder="Options (comma separated)">
-<input type="text" id="quizAnswer" placeholder="Correct Answer">
-<button class="primary" onclick="addQuiz()">Add Quiz</button>
-</div>
-
-<div class="card">
-<h3>Manage Payments</h3>
-<button class="primary" onclick="setupPayments()">Setup Payments / Currency</button>
-</div>
-
-</div>
-
-<!-- Settings Page -->
-<div id="settings" class="page">
-<h2>Settings ⚙️</h2>
-<div class="card">
-<label>Language:</label>
-<select id="languageSelect" onchange="setLanguage()">
-<option value="en">English</option>
-<option value="fr">French</option>
-</select>
-</div>
-
-<div class="card">
-<label>Education System:</label>
-<select id="educationSelect" onchange="setEducationSystem()">
-<option value="american">American</option>
-<option value="british">British</option>
-<option value="cbc">CBC</option>
-<option value="8-4-4">8-4-4</option>
-</select>
-</div>
-
-<div class="card">
-<label>School Name:</label>
-<input type="text" placeholder="School Name" id="schoolName" onblur="setSchool()">
-</div>
-</div>
-
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
-<script>
-// Firebase Config
+// Firebase configuration
+// Replace these with your actual Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyC5YcpJxd28_IxLmxpTr4Xv3lVUmiPp7v0",
-  authDomain: "continuum-learning-app.firebaseapp.com",
-  projectId: "continuum-learning-app",
-  storageBucket: "continuum-learning-app.firebasestorage.app",
-  messagingSenderId: "933821958856",
-  appId: "1:933821958856:web:5f75b4593403cd1cb3b3fd",
-  measurementId: "G-HP3PJYC3QF"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const db = firebase.database();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
-// Navigation
-function showPage(pageId){
-  const pages=document.querySelectorAll('.page');
-  pages.forEach(p=>p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
+// Global Variables
+let currentUser = null;
+let currentRole = null; // 'admin' or 'student'
+let currentLevel = null; // Form/Grade/Year
+let currentSystem = null; // 8-4-4, CBC, British, American, College, University
+
+/*******************************
+ * USER AUTHENTICATION
+ *******************************/
+
+// Login Function
+async function login(email, password) {
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        currentUser = userCredential.user;
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        currentRole = userDoc.data().role;
+        currentLevel = userDoc.data().level;
+        currentSystem = userDoc.data().system;
+        setupDashboard();
+    } catch (error) {
+        alert("Login Failed: " + error.message);
+    }
 }
 
-// ========== Authentication ==========
-
-function login(role){
-  if(role==='student'){
-    const email=document.getElementById('studentEmail').value;
-    const pass=document.getElementById('studentPass').value;
-    auth.signInWithEmailAndPassword(email, pass)
-      .then(()=>{alert('Student logged in!'); showPage('dashboard'); loadStudentDashboard();})
-      .catch(err=>{alert(err.message)});
-  } else {
-    const email=document.getElementById('adminEmail').value;
-    const pass=document.getElementById('adminPass').value;
-    auth.signInWithEmailAndPassword(email, pass)
-      .then(user=>{
-        if(email==='admin@continuum.com'){
-          alert('Admin logged in!'); showPage('adminDashboard'); loadAdminData();
-        } else alert('Not authorized as admin');
-      })
-      .catch(err=>{alert(err.message)});
-  }
-}
-
-function registerStudent(){
-  const email=document.getElementById('studentEmail').value;
-  const pass=document.getElementById('studentPass').value;
-  auth.createUserWithEmailAndPassword(email, pass)
-    .then(()=>{alert('Student account created!');})
-    .catch(err=>{alert(err.message)});
-}
-
-// ========== Admin Actions ==========
-
-function addSubject(){
-  const name=document.getElementById('newSubject').value;
-  const key=db.ref('subjects').push().key;
-  db.ref('subjects/'+key).set({name:name});
-  document.getElementById('newSubject').value='';
-  loadAdminData();
-}
-
-function addLibraryItem(){
-  const title=document.getElementById('newLibraryTitle').value;
-  const desc=document.getElementById('newLibraryDesc').value;
-  const key=db.ref('library').push().key;
-  db.ref('library/'+key).set({title:title,desc:desc});
-  document.getElementById('newLibraryTitle').value='';
-  document.getElementById('newLibraryDesc').value='';
-  loadAdminData();
-}
-
-function addVideo(){
-  const subject=document.getElementById('videoSubject').value;
-  const title=document.getElementById('videoTitle').value;
-  const url=document.getElementById('videoURL').value;
-  const key=db.ref('videos/'+subject).push().key;
-  db.ref('videos/'+subject+'/'+key).set({title:title,url:url});
-  document.getElementById('videoSubject').value='';
-  document.getElementById('videoTitle').value='';
-  document.getElementById('videoURL').value='';
-  loadAdminData();
-}
-
-function addQuiz(){
-  const subject=document.getElementById('quizSubject').value;
-  const question=document.getElementById('quizQuestion').value;
-  const options=document.getElementById('quizOptions').value.split(',');
-  const answer=document.getElementById('quizAnswer').value;
-  const key=db.ref('quizzes/'+subject).push().key;
-  db.ref('quizzes/'+subject+'/'+key).set({question:question,options:options,answer:answer});
-  document.getElementById('quizSubject').value='';
-  document.getElementById('quizQuestion').value='';
-  document.getElementById('quizOptions').value='';
-  document.getElementById('quizAnswer').value='';
-  loadAdminData();
-}
-
-function setupPayments(){ alert('Payment integration (Stripe/PayPal) setup here'); }
-
-// ========== Load Data ==========
-
-function loadAdminData(){
-  // Subjects
-  db.ref('subjects').once('value').then(snapshot=>{
-    let list='';
-    snapshot.forEach(sub=>{list+='<p>'+sub.val().name+'</p>';});
-    document.getElementById('subjectsList').innerHTML=list;
-  });
-  // Library
-  db.ref('library').once('value').then(snapshot=>{
-    let list='';
-    snapshot.forEach(lib=>{list+='<p><b>'+lib.val().title+'</b>: '+lib.val().desc+'</p>';});
-    document.getElementById('libraryList').innerHTML=list;
-  });
-}
-
-function loadStudentDashboard(){
-  // Videos
-  db.ref('videos').once('value').then(snapshot=>{
-    let html='';
-    snapshot.forEach(subject=>{
-      html+='<h4>'+subject.key+'</h4>';
-      subject.forEach(v=>{
-        html+='<video controls><source src="'+v.val().url+'" type="video/mp4"></video>';
-        html+='<p>'+v.val().title+'</p>';
-      });
-    });
-    document.getElementById('videoList').innerHTML=html;
-  });
-
-  // Quizzes
-  db.ref('quizzes').once('value').then(snapshot=>{
-    let html='';
-    snapshot.forEach(subject=>{
-      html+='<h4>'+subject.key+'</h4>';
-      subject.forEach(q=>{
-        html+='<p>'+q.val().question+'</p>';
-        q.val().options.forEach(opt=>{
-          html+='<button class="primary" onclick="checkAnswer(\''+q.key+'\',\''+opt+'\',\''+q.val().answer+'\')">'+opt+'</button>';
+// Register Function
+async function register(name, email, password, system, level, field = "") {
+    try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        currentUser = userCredential.user;
+        await db.collection('users').doc(currentUser.uid).set({
+            name: name,
+            email: email,
+            role: "student",
+            system: system,
+            level: level,
+            field: field,
+            likedPosts: [],
+            results: {}
         });
-      });
+        currentRole = "student";
+        currentLevel = level;
+        currentSystem = system;
+        setupDashboard();
+    } catch (error) {
+        alert("Registration Failed: " + error.message);
+    }
+}
+
+/*******************************
+ * DASHBOARD SETUP
+ *******************************/
+function setupDashboard() {
+    if (currentRole === "admin") {
+        showAdminDashboard();
+    } else {
+        showStudentDashboard();
+    }
+}
+
+/*******************************
+ * ADMIN DASHBOARD
+ *******************************/
+function showAdminDashboard() {
+    const main = document.getElementById("main-content");
+    main.innerHTML = `
+    <h2>Admin Dashboard</h2>
+    <button onclick="uploadContent('video')">Upload Video</button>
+    <button onclick="uploadContent('book')">Upload Book</button>
+    <button onclick="uploadContent('music')">Upload Music</button>
+    <button onclick="createQuiz()">Create Quiz</button>
+    <button onclick="createExam()">Create Exam</button>
+    <button onclick="addCourse()">Add Course Recommendation</button>
+    `;
+}
+
+/*******************************
+ * STUDENT DASHBOARD
+ *******************************/
+function showStudentDashboard() {
+    const main = document.getElementById("main-content");
+    main.innerHTML = `
+    <h2>Welcome, ${currentUser.email}</h2>
+    <div id="feed"></div>
+    <button onclick="viewTimetable()">View / Create Timetable</button>
+    <button onclick="viewExams()">Take Exam</button>
+    <button onclick="viewQuizzes()">Take Quiz</button>
+    <button onclick="viewCourseRecommendations()">Recommended Courses</button>
+    `;
+    loadFeed();
+}
+
+/*******************************
+ * FEED / INSTAGRAM-STYLE
+ *******************************/
+async function loadFeed() {
+    const feedDiv = document.getElementById("feed");
+    feedDiv.innerHTML = "<p>Loading feed...</p>";
+    const feedSnapshot = await db.collection("feed")
+        .where("targetLevel", "==", currentLevel)
+        .where("targetSystem", "==", currentSystem)
+        .orderBy("timestamp", "desc")
+        .get();
+    feedDiv.innerHTML = "";
+    feedSnapshot.forEach(doc => {
+        const post = doc.data();
+        const postDiv = document.createElement("div");
+        postDiv.classList.add("card");
+        postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>Type: ${post.type}</p>
+            <button onclick="likePost('${doc.id}')">Like (${post.likes || 0})</button>
+            <button onclick="commentPost('${doc.id}')">Comment</button>
+        `;
+        feedDiv.appendChild(postDiv);
     });
-    document.getElementById('quizList').innerHTML=html;
-  });
+}
 
-  // Leaderboard
-  db.ref('users').once('value').then(snapshot=>{
-    let scores=[];
-    snapshot.forEach(u=>{if(u.val().score) scores.push({name:u.key,score:u.val().score});});
-    scores.sort((a,b)=>b.score-a.score);
-    let html='<ol>';
-    scores.forEach(s=>{html+='<li>'+s.name+': '+s.score+'</li>';});
-    html+='</ol>';
-    document.getElementById('leaderboard').innerHTML=html;
-  });
-
-  // Chat
-  db.ref('chat').on('value', snapshot=>{
-    let html='';
-    snapshot.forEach(msg=>{
-      html+='<p><b>'+msg.val().user+':</b> '+msg.val().text+'</p>';
+async function likePost(postId) {
+    const postRef = db.collection("feed").doc(postId);
+    await postRef.update({
+        likes: firebase.firestore.FieldValue.increment(1)
     });
-    document.getElementById('chatBox').innerHTML=html;
-  });
+    loadFeed();
 }
 
-// ========== Quiz Check ==========
-
-function checkAnswer(qKey,selected,correct){
-  if(selected===correct){alert('Correct!');}else{alert('Wrong!');}
-  // Here you can increment user score in Firebase
+function commentPost(postId) {
+    const comment = prompt("Enter your comment:");
+    if (!comment) return;
+    db.collection("feed").doc(postId).collection("comments").add({
+        user: currentUser.uid,
+        text: comment,
+        timestamp: firebase.firestore.Timestamp.now()
+    });
 }
 
-// ========== Timetable & Chat ==========
-
-function saveTimetable(){
-  const user=auth.currentUser;
-  if(!user){alert('Login first'); return;}
-  const tt=document.getElementById('timetable').value;
-  db.ref('users/'+user.uid+'/timetable').set(tt);
-  alert('Timetable saved!');
+/*******************************
+ * QUIZZES
+ *******************************/
+function viewQuizzes() {
+    alert("Quizzes interface placeholder. Fetch quizzes based on level and system from Firebase.");
 }
 
-function sendChat(){
-  const user=auth.currentUser;
-  if(!user){alert('Login first'); return;}
-  const msg=document.getElementById('chatMessage').value;
-  db.ref('chat').push({user:user.email,text:msg});
-  document.getElementById('chatMessage').value='';
+function createQuiz() {
+    alert("Admin create quiz interface placeholder.");
 }
 
-// ========== Settings ==========
+/*******************************
+ * EXAMS
+ *******************************/
+function viewExams() {
+    alert("Exams interface placeholder. Show exams based on level and system.");
+}
 
-function setLanguage(){ alert('Language selection saved'); }
-function setEducationSystem(){ alert('Education system saved'); }
-function setSchool(){ alert('School saved'); }
+function createExam() {
+    alert("Admin create exam interface placeholder.");
+}
 
-</script>
+/*******************************
+ * COURSE RECOMMENDATIONS
+ *******************************/
+function viewCourseRecommendations() {
+    alert("Show recommended courses based on student results and level.");
+}
 
-</body>
-  </html>
+function addCourse() {
+    alert("Admin add course recommendation interface placeholder.");
+}
+
+/*******************************
+ * TIMETABLE
+ *******************************/
+function viewTimetable() {
+    alert("Show / create timetable interface placeholder.");
+}
+
+/*******************************
+ * MEDIA UPLOAD
+ *******************************/
+function uploadContent(type) {
+    alert(`Admin upload ${type} interface placeholder.`);
+}
+
+/*******************************
+ * MUSIC PLAYER
+ *******************************/
+function playMusic(fileUrl) {
+    const audio = new Audio(fileUrl);
+    audio.play();
+}
+
+/*******************************
+ * LOGOUT
+ *******************************/
+function logout() {
+    auth.signOut().then(() => {
+        currentUser = null;
+        currentRole = null;
+        currentLevel = null;
+        currentSystem = null;
+        document.getElementById("main-content").innerHTML = "<p>Logged out.</p>";
+    });
+}
+
+/*******************************
+ * PLACEHOLDER FOR AUTO-GENERATED QUESTIONS
+ *******************************/
+function generateQuestions(subject, topic) {
+    alert(`Generating questions for ${subject} - ${topic} from AI / internet.`);
+}
