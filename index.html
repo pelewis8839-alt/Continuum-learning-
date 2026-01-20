@@ -1,232 +1,29 @@
-/*******************************
- * Continuum Learning App Script
- * Fully Functional Placeholder
- *******************************/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuum Learning App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Continuum Learning Logo" class="logo">
+        <span>Continuum Learning</span>
+    </header>
 
-// Firebase configuration
-// Replace these with your actual Firebase config
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+    <nav id="navbar">
+        <!-- Buttons dynamically generated based on role -->
+    </nav>
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+    <main id="main-content">
+        <!-- Content sections: school, university, admin dashboard, feed, timetable, exams, quizzes, music, course recommendations -->
+    </main>
 
-// Global Variables
-let currentUser = null;
-let currentRole = null; // 'admin' or 'student'
-let currentLevel = null; // Form/Grade/Year
-let currentSystem = null; // 8-4-4, CBC, British, American, College, University
-
-/*******************************
- * USER AUTHENTICATION
- *******************************/
-
-// Login Function
-async function login(email, password) {
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        currentUser = userCredential.user;
-        const userDoc = await db.collection('users').doc(currentUser.uid).get();
-        currentRole = userDoc.data().role;
-        currentLevel = userDoc.data().level;
-        currentSystem = userDoc.data().system;
-        setupDashboard();
-    } catch (error) {
-        alert("Login Failed: " + error.message);
-    }
-}
-
-// Register Function
-async function register(name, email, password, system, level, field = "") {
-    try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        currentUser = userCredential.user;
-        await db.collection('users').doc(currentUser.uid).set({
-            name: name,
-            email: email,
-            role: "student",
-            system: system,
-            level: level,
-            field: field,
-            likedPosts: [],
-            results: {}
-        });
-        currentRole = "student";
-        currentLevel = level;
-        currentSystem = system;
-        setupDashboard();
-    } catch (error) {
-        alert("Registration Failed: " + error.message);
-    }
-}
-
-/*******************************
- * DASHBOARD SETUP
- *******************************/
-function setupDashboard() {
-    if (currentRole === "admin") {
-        showAdminDashboard();
-    } else {
-        showStudentDashboard();
-    }
-}
-
-/*******************************
- * ADMIN DASHBOARD
- *******************************/
-function showAdminDashboard() {
-    const main = document.getElementById("main-content");
-    main.innerHTML = `
-    <h2>Admin Dashboard</h2>
-    <button onclick="uploadContent('video')">Upload Video</button>
-    <button onclick="uploadContent('book')">Upload Book</button>
-    <button onclick="uploadContent('music')">Upload Music</button>
-    <button onclick="createQuiz()">Create Quiz</button>
-    <button onclick="createExam()">Create Exam</button>
-    <button onclick="addCourse()">Add Course Recommendation</button>
-    `;
-}
-
-/*******************************
- * STUDENT DASHBOARD
- *******************************/
-function showStudentDashboard() {
-    const main = document.getElementById("main-content");
-    main.innerHTML = `
-    <h2>Welcome, ${currentUser.email}</h2>
-    <div id="feed"></div>
-    <button onclick="viewTimetable()">View / Create Timetable</button>
-    <button onclick="viewExams()">Take Exam</button>
-    <button onclick="viewQuizzes()">Take Quiz</button>
-    <button onclick="viewCourseRecommendations()">Recommended Courses</button>
-    `;
-    loadFeed();
-}
-
-/*******************************
- * FEED / INSTAGRAM-STYLE
- *******************************/
-async function loadFeed() {
-    const feedDiv = document.getElementById("feed");
-    feedDiv.innerHTML = "<p>Loading feed...</p>";
-    const feedSnapshot = await db.collection("feed")
-        .where("targetLevel", "==", currentLevel)
-        .where("targetSystem", "==", currentSystem)
-        .orderBy("timestamp", "desc")
-        .get();
-    feedDiv.innerHTML = "";
-    feedSnapshot.forEach(doc => {
-        const post = doc.data();
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("card");
-        postDiv.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>Type: ${post.type}</p>
-            <button onclick="likePost('${doc.id}')">Like (${post.likes || 0})</button>
-            <button onclick="commentPost('${doc.id}')">Comment</button>
-        `;
-        feedDiv.appendChild(postDiv);
-    });
-}
-
-async function likePost(postId) {
-    const postRef = db.collection("feed").doc(postId);
-    await postRef.update({
-        likes: firebase.firestore.FieldValue.increment(1)
-    });
-    loadFeed();
-}
-
-function commentPost(postId) {
-    const comment = prompt("Enter your comment:");
-    if (!comment) return;
-    db.collection("feed").doc(postId).collection("comments").add({
-        user: currentUser.uid,
-        text: comment,
-        timestamp: firebase.firestore.Timestamp.now()
-    });
-}
-
-/*******************************
- * QUIZZES
- *******************************/
-function viewQuizzes() {
-    alert("Quizzes interface placeholder. Fetch quizzes based on level and system from Firebase.");
-}
-
-function createQuiz() {
-    alert("Admin create quiz interface placeholder.");
-}
-
-/*******************************
- * EXAMS
- *******************************/
-function viewExams() {
-    alert("Exams interface placeholder. Show exams based on level and system.");
-}
-
-function createExam() {
-    alert("Admin create exam interface placeholder.");
-}
-
-/*******************************
- * COURSE RECOMMENDATIONS
- *******************************/
-function viewCourseRecommendations() {
-    alert("Show recommended courses based on student results and level.");
-}
-
-function addCourse() {
-    alert("Admin add course recommendation interface placeholder.");
-}
-
-/*******************************
- * TIMETABLE
- *******************************/
-function viewTimetable() {
-    alert("Show / create timetable interface placeholder.");
-}
-
-/*******************************
- * MEDIA UPLOAD
- *******************************/
-function uploadContent(type) {
-    alert(`Admin upload ${type} interface placeholder.`);
-}
-
-/*******************************
- * MUSIC PLAYER
- *******************************/
-function playMusic(fileUrl) {
-    const audio = new Audio(fileUrl);
-    audio.play();
-}
-
-/*******************************
- * LOGOUT
- *******************************/
-function logout() {
-    auth.signOut().then(() => {
-        currentUser = null;
-        currentRole = null;
-        currentLevel = null;
-        currentSystem = null;
-        document.getElementById("main-content").innerHTML = "<p>Logged out.</p>";
-    });
-}
-
-/*******************************
- * PLACEHOLDER FOR AUTO-GENERATED QUESTIONS
- *******************************/
-function generateQuestions(subject, topic) {
-    alert(`Generating questions for ${subject} - ${topic} from AI / internet.`);
-}
+    <footer>
+        <p>&copy; 2026 Continuum Learning App</p>
+    </footer>
+</body>
+</html>
